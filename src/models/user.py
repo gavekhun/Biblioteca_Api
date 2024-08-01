@@ -1,9 +1,6 @@
 from src.models import Base
-from sqlalchemy.orm import relationship
-from sqlalchemy.orm import Mapped
-from sqlalchemy.orm import mapped_column
+from sqlalchemy.orm import relationship, Mapped, mapped_column
 from sqlalchemy import String, DateTime
-from sqlalchemy import ForeignKey
 from typing import List
 from datetime import datetime
 from src.models.book import Book
