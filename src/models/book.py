@@ -3,7 +3,6 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import relationship
-from src.models.user import User
 
 
 class Book(Base):

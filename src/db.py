@@ -1,23 +1,32 @@
 import config
-
-from sqlalchemy import URL
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from contextlib import contextmanager
+from src.models import Base
 
-engine = URL.create("mysql+pymysql",
-                    host=config.MYSQL_HOST,
-                    username=config.MYSQL_USER,
-                    password=config.MYSQL_PASSWORD,
-                    database=config.MYSQL_DATABASE,
-                    port=config.MYSQL_PORT)
 
-sess = sessionmaker(create_engine(engine, echo=True, pool_pre_ping=True), expire_on_commit=False, autoflush=False)
+engine = create_engine(
+    f"mysql+pymysql://{config.MYSQL_USER}:{config.MYSQL_PASSWORD}@{config.MYSQL_HOST}:{config.MYSQL_PORT}/{config.MYSQL_DATABASE}",
+    echo=True,
+    pool_pre_ping=True
+)
+
+
+SessionLocal = sessionmaker(
+    bind=engine,
+    expire_on_commit=False,
+    autoflush=False
+)
+
+
+def init_db():
+    Base.metadata.create_all(bind=engine)
 
 
 @contextmanager
 def session_scope():
-    session = sess()
+
+    session = SessionLocal()
     try:
         yield session
         session.commit()
